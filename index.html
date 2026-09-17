@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Matias Tadeo Alarcon Meza - Personal Website</title>
-        <link rel="stylesheet" type="text/css" href="fancy.css">
+        <link rel="stylesheet" href="fancy.css">
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <style>
             .game-container {
@@ -73,44 +73,44 @@
         <h1>Matias Tadeo Alarcon Meza</h1>
 
         <nav>
-            <a href="about.html">About Me</a> | 
+            <a href="about.html">About Me</a> |
             <a href="resume.html">My Resume</a>
         </nav>
 
         <h2>Introduction</h2>
         <p>Welcome to my personal website created for the CIS 115 coursework. In this first paragraph, I am including words formatted in <strong>bold text</strong> as well as expressions rendered in <em>italics</em> to fulfill the foundational requirements outlined in the project instructions.</p>
-        
+
         <p>This is the second paragraph where I continue to demonstrate fundamental web formatting techniques. It is essential to emphasize <b>key terms in bold</b> alongside other relevant details in <i>italics</i> to ensure proper visual structure and readability across browsers.</p>
-        
+
         <p>In this third paragraph, I present additional extended introductory content that wraps across multiple lines in the browser window. We make sure to incorporate <strong>bold elements</strong> and complementary phrases in <em>italics</em> as specified by the assignment guidelines.</p>
-        
+
         <p>Finally, this fourth paragraph wraps up our main homepage introduction section. I conclude by applying emphasis using <b>bold styling</b> on selected words and <i>italic styling</i> on others to verify full compliance with all project criteria.</p>
 
         <h2>Tic-Tac-Toe Game</h2>
         <div id="app" class="game-container">
-            <div id="turn">{{ statusMessage }}</div>
-            
-            <table>
+            <div id="turn">X's Turn</div>
+
+            <table id="board">
                 <tbody>
                     <tr>
-                        <td v-on:click="makeMove(0)">{{ board[0] }}</td>
-                        <td v-on:click="makeMove(1)">{{ board[1] }}</td>
-                        <td v-on:click="makeMove(2)">{{ board[2] }}</td>
+                        <td id="cell-0"></td>
+                        <td id="cell-1"></td>
+                        <td id="cell-2"></td>
                     </tr>
                     <tr>
-                        <td v-on:click="makeMove(3)">{{ board[3] }}</td>
-                        <td v-on:click="makeMove(4)">{{ board[4] }}</td>
-                        <td v-on:click="makeMove(5)">{{ board[5] }}</td>
+                        <td id="cell-3"></td>
+                        <td id="cell-4"></td>
+                        <td id="cell-5"></td>
                     </tr>
                     <tr>
-                        <td v-on:click="makeMove(6)">{{ board[6] }}</td>
-                        <td v-on:click="makeMove(7)">{{ board[7] }}</td>
-                        <td v-on:click="makeMove(8)">{{ board[8] }}</td>
+                        <td id="cell-6"></td>
+                        <td id="cell-7"></td>
+                        <td id="cell-8"></td>
                     </tr>
                 </tbody>
             </table>
 
-            <button id="reset-btn" v-on:click="resetGame">Reset Game</button>
+            <button type="button" id="reset-btn">Reset Game</button>
         </div>
 
         <script>
@@ -130,6 +130,29 @@
                         ]
                     };
                 },
+                watch: {
+                    board: {
+                        handler(value) {
+                            for (let i = 0; i < value.length; i++) {
+                                const cell = document.getElementById("cell-" + i);
+                                if (cell) {
+                                    cell.textContent = value[i];
+                                }
+                            }
+                        },
+                        deep: true,
+                        immediate: true
+                    },
+                    statusMessage: {
+                        handler(value) {
+                            const turnBox = document.getElementById("turn");
+                            if (turnBox) {
+                                turnBox.textContent = value;
+                            }
+                        },
+                        immediate: true
+                    }
+                },
                 methods: {
                     makeMove(index) {
                         if (this.board[index] === "" && !this.gameOver) {
@@ -147,8 +170,8 @@
                     checkWin() {
                         return this.winConditions.some(condition => {
                             const [a, b, c] = condition;
-                            return this.board[a] !== "" && 
-                                   this.board[a] === this.board[b] && 
+                            return this.board[a] !== "" &&
+                                   this.board[a] === this.board[b] &&
                                    this.board[b] === this.board[c];
                         });
                     },
@@ -157,9 +180,31 @@
                         this.turn = "x";
                         this.gameOver = false;
                         this.statusMessage = "X's Turn";
+                    },
+                    handleBoardClick(event) {
+                        const cell = event.target.closest("td");
+                        if (!cell || !cell.id.startsWith("cell-")) {
+                            return;
+                        }
+                        const index = parseInt(cell.id.slice(5), 10);
+                        if (!Number.isNaN(index)) {
+                            this.makeMove(index);
+                        }
                     }
+                },
+                mounted() {
+                    document.getElementById("board")
+                        .addEventListener("click", this.handleBoardClick);
+                    document.getElementById("reset-btn")
+                        .addEventListener("click", this.resetGame);
+                },
+                unmounted() {
+                    document.getElementById("board")
+                        .removeEventListener("click", this.handleBoardClick);
+                    document.getElementById("reset-btn")
+                        .removeEventListener("click", this.resetGame);
                 }
-            }).mount('#app');
+            }).mount("#app");
         </script>
     </body>
 </html>
