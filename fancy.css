@@ -49,12 +49,3 @@ nav a:hover {
 strong, b {
     color: #ffffff;
 }
-
-nav a:hover {
-    text-decoration: underline;
-    color: #7dd3fc;
-}
-
-strong, b {
-    color: #ffffff;
-}
