@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Personal Website - CIS 115</title>
+        <link rel="stylesheet" type="text/css" href="fancy.css"/>
+        <style>
+            td {
+                border: 5px solid black;
+                width: 100px;
+                height: 100px;
+                font-size: 3em;
+                text-align: center;
+                font-family: sans-serif;
+            }
+            td:nth-child(1) { border-left: none; }
+            td:nth-child(3) { border-right: none; }
+            tr:nth-child(1) > td { border-top: none; }
+            tr:nth-child(3) > td { border-bottom: none; }
+            #turn {
+                font-weight: bold;
+                text-transform: capitalize;
+                text-align: center;
+                font-size: 16pt;
+                color: white;
+                background-color: #7703c5;
+                width: 310px;
+                padding: 5px 0;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Home Page</h1>
+
+        <nav>
+            <a href="about.html">About Me</a> | 
+            <a href="resume.html">My Resume</a>
+        </nav>
+
+        <h2>Introduction</h2>
+        <p>Welcome to my personal website created for the CIS 115 coursework. In this first paragraph, I am including words formatted in <strong>bold text</strong> as well as expressions rendered in <em>italics</em> to fulfill the foundational requirements outlined in the project instructions.</p>
+        
+        <p>This is the second paragraph where we continue to demonstrate fundamental web formatting techniques. It is essential to emphasize <b>key terms in bold</b> alongside other relevant details in <i>italics</i> to ensure proper visual structure and readability across browsers.</p>
+        
+        <p>In this third paragraph, we present additional extended introductory content that wraps across multiple lines in the browser window. We make sure to incorporate <strong>bold elements</strong> and complementary phrases in <em>italics</em> as specified by the assignment guidelines.</p>
+        
+        <p>Finally, this fourth paragraph wraps up our main homepage introduction section. We conclude by applying emphasis using <b>bold styling</b> on selected words and <i>italic styling</i> on others to verify full compliance with all project criteria.</p>
+
+        <h2>Tic-Tac-Toe Game</h2>
+        <div id="turn">x's Turn</div>
+        
+        <table>
+            <tbody>
+                <tr>
+                    <td id="s0"></td>
+                    <td id="s1"></td>
+                    <td id="s2"></td>
+                </tr>
+                <tr>
+                    <td id="s3"></td>
+                    <td id="s4"></td>
+                    <td id="s5"></td>
+                </tr>
+                <tr>
+                    <td id="s6"></td>
+                    <td id="s7"></td>
+                    <td id="s8"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+        <script>
+            var turn = "x";
+            var gameOver = false;
+
+            var winConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            function checkWin() {
+                for (var i = 0; i < winConditions.length; i++) {
+                    var a = $("#s" + winConditions[i][0]).text();
+                    var b = $("#s" + winConditions[i][1]).text();
+                    var c = $("#s" + winConditions[i][2]).text();
+
+                    if (a !== "" && a === b && b === c) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            $("td").on("click", function () {
+                var $square = $(this);
+
+                if ($square.text() === "" && !gameOver) {
+                    $square.text(turn);
+
+                    if (checkWin()) {
+                        $("#turn").text(turn.toUpperCase() + " Wins!");
+                        gameOver = true;
+                    } else {
+                        turn = (turn === "x") ? "o" : "x";
+                        $("#turn").text(turn + "'s turn");
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

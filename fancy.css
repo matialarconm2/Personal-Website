@@ -1,0 +1,21 @@
+body {
+    background-color: #f4f4f6;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+p {
+    font-family: 'Georgia', serif;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    font-size: 28px;
+    color: #222;
+}
+
+a {
+    color: #0056b3;
+    text-decoration: underline;
+}
